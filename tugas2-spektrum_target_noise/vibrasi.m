@@ -10,27 +10,66 @@
 %
 % Teknik Fisika - Institut Teknologi Sepuluh Nopember
 %__________________________________________________________________________
+clear all;
+%close all;
+clc;
 
 load p1-unbalance.lvm          
 
 % kolom 1 = waktu
 data.axi     = p1_unbalance(:,2);   % kolom 2 = axial
-data.hor     = p1_unbalance(:,3);   % kolom 3 = horizontal
-data.vert    = p1_unbalance(:,4);   % kolom 4 = vertical
+%data.hor     = p1_unbalance(:,3);   % kolom 3 = horizontal
+%data.vert    = p1_unbalance(:,4);   % kolom 4 = vertical
 
+clear p1_unbalance;
 % normalisasi skala -1 hingga 1
-xmax = 1; 
-xmin = -1;
+data.xmax = 1; 
+data.xmin = -1;
 
-data.axi  = (data.axi - min(data.axi)).*(xmax - xmin)/(max(data.axi)...
-    - min(data.axi)) + xmin;
-data.hor  = (data.hor - min(data.hor)).*(xmax - xmin)/(max(data.hor)...
-    - min(data.hor)) + xmin;
-data.vert = (data.vert - min(data.vert)).*(xmax - xmin)/(max(data.vert)...
-    - min(data.vert)) + xmin;
+data.axi  = (data.axi - min(data.axi)).*(data.xmax - data.xmin)/...
+    (max(data.axi) - min(data.axi)) + data.xmin;
+%data.hor  = (data.hor - min(data.hor)).*(data.xmax - data.xmin)/...
+%    (max(data.hor) - min(data.hor)) + data.xmin;
+%data.vert = (data.vert - min(data.vert)).*(data.xmax - data.xmin)/...
+%    (max(data.vert) - min(data.vert)) + data.xmin;
 
 % frekuensi sampling 25600 Hz
 data.fs = 25600;
 
+% type data
+data.title = 'Spektrum Getaran Pompa (aksial)';
+
+% axial
 data.db_axi = mean(db(data.axi));
-fprintf('rata-rata level pada sumbu axial = %.2f dB\n', data.db_axi);
+fprintf('rata-rata level pada sumbu aksial = %.2f dB\n', data.db_axi);
+
+data.dbmax_axi = max(db(data.axi));
+fprintf('max level pada sumbu aksial = %.2f dB\n', data.dbmax_axi);
+
+%horizontal
+%data.db_hor = mean(db(data.hor));
+%fprintf('rata-rata level pada sumbu horizontal = %.2f dB\n', data.db_hor);
+
+%data.dbmax_hor = max(db(data.hor));
+%fprintf('max level pada sumbu horizontal = %.2f dB\n', data.dbmax_hor);
+
+%vertikal
+%data.db_vert = mean(db(data.vert));
+%fprintf('rata-rata level pada sumbu vertikal = %.2f dB\n', data.db_vert);
+
+%data.dbmax_vert = max(db(data.vert));
+%fprintf('max level pada sumbu vertikal = %.2f dB\n', data.dbmax_vert);
+
+%% tambah noise
+noise.pow = 120;
+noise.type = 'Violet';   % jenis noise
+[data.mix] = tambah_noise(data.axi, noise.pow, noise.type,...
+    length(data.axi));
+%% plot spektrum vibrasi & vibrasi + noise
+data.nfft = 1024;
+
+noise.title = sprintf('Spektrum Getaran Pompa( Aksial, %i dB %s Noise)',...
+    noise.pow, noise.type);
+
+plot_vibrasinoise(data.mix, data.axi, data.fs, data.nfft,...
+    noise.title, data.title, 1);
