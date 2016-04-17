@@ -1,3 +1,4 @@
+function plot_vibrasinoise(data1, data2, fs, nfft, type1, type2, fig)
 % plot_vibrasinoise.m
 %
 % Menampilkan spektrum antara 0 - 1000 Hz dari data getaran pompa pada tiga
@@ -11,21 +12,16 @@
 % Teknik Fisika - Institut Teknologi Sepuluh Nopember
 %__________________________________________________________________________
 
-NFFT = 2^nextpow2(length(data.axi));
-
-fig = 1; %nomer figure
-
 figure(fig);
 subplot(211);
-myspectrogram(data.axi_whi, data.fs, [20 5], @hamming, NFFT); axis tight;
-title ('Spektrum Getaran Pompa (Aksial, White Noise (dB sama))',...
-    'fontweight','bold', 'fontsize', 12);
+myspectrogram(data1, fs, [20 5], @hamming, nfft); axis tight;
+title (type1, 'fontweight','bold', 'fontsize', 12);
 xlabel ('waktu (detik)','fontweight','bold','fontsize',12);
 ylabel ('frekuensi (Hz)','fontweight','bold','fontsize',12);
 subplot(212);
-myspectrogram(data.axi, data.fs, [20 5], @hamming, NFFT); axis tight;
-title ('Spektrum Getaran Pompa (Aksial)', 'fontweight','bold',...
+myspectrogram(data2, fs, [20 5], @hamming, nfft); axis tight;
+title (type2, 'fontweight','bold',...
     'fontsize', 12);
 xlabel ('waktu (detik)','fontweight','bold','fontsize',12);
 ylabel ('frekuensi (Hz)','fontweight','bold','fontsize',12);
-
+end
