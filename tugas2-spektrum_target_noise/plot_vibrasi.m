@@ -9,6 +9,7 @@
 %
 % Teknik Fisika - Institut Teknologi Sepuluh Nopember
 %__________________________________________________________________________
+close all;
 
 NFFT = 2^nextpow2(length(data.axi));
 
