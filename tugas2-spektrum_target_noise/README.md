@@ -1,6 +1,6 @@
 ## Tugas 2
 - Plot spectrogram data vibrasi pompa yang telah diambil untuk melihat frekuensi naturalnya, kemudian jika ditambah 3 jenis noise yang berbeda (e.g white noise, pink noise, etc) hasilnya seperti apa? Sampai berapa besar spectrogram dapat melihat frekuensi naturalnya terhadap kenaikan noise (SNR)?
-- Evaluasi data vibrasi pompa dengan *Hilbert*, *Hilbert-Huang* dan *EMD*.
+
 <dl>
     <dt>+ vibrasi.m
     <dd>Performansi spektrogram menampilkan spektrum data getaran pompa terhadap kenaikan tingkat tekanan bunyi dari noise (white noise, pink noise, brown noise dan blue noise)
@@ -15,3 +15,5 @@
     <dt>+ rednoise.m, bluenoise.m, pinknoise.m, violetnoise.m
     <dd>Membuat berbagai jenis noise dengan panjang tertentu (jenis noise sesuai nama file).
 </dl>
+
+- Evaluasi data vibrasi pompa dengan *Hilbert*, *Hilbert-Huang* dan *EMD*.
