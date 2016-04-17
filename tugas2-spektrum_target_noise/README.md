@@ -10,8 +10,8 @@
     <dd>Menampilkan spektrum antara 0 - 1000 Hz dari data getaran pompa pada tiga titik pengukuran yaitu sumbu aksial, horizontal dan vertikal dengan tambahan noise dengan SNR tertentu.
     <dt>+ plot_vibrasi.m
     <dd>Menampilkan spektrum antara 0 - 1000 Hz dari data getaran pompa pada tiga titik pengukuran yaitu sumbu aksial, horizontal dan vertikal.
-    <dt>>+ myspectrogram.m
+    <dt>+ myspectrogram.m
     <dd>Spectrogram dengan variasi metode perolehan spectrum (spectrogram, specgram, dan toframes). Disini yang dipakai adalah toframes.
-    <dt>>+ rednoise.m, bluenoise.m, pinknoise.m, violetnoise.m
+    <dt>+ rednoise.m, bluenoise.m, pinknoise.m, violetnoise.m
     <dd>Membuat berbagai jenis noise dengan panjang tertentu (jenis noise sesuai nama file).
 </dl>
