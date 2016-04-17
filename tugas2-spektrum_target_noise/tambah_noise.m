@@ -1,3 +1,4 @@
+function [mix] = tambah_noise(data, pow, type, length)
 % tambah_noise.m
 %
 % Menambahkan berbagai jenis noise terhadap data getaran pompa dengan
@@ -9,21 +10,34 @@
 %
 % Teknik Fisika - Institut Teknologi Sepuluh Nopember
 %__________________________________________________________________________
+switch type
+    case 'White' % White Noise
+        noise = randn(length,1);
+        
+    case 'Blue'% Blue Noise
+        noise = bluenoise(length);
+        noise = noise';
+        
+    case 'Pink'% Pink Noise
+        noise = pinknoise(length);
+        noise = noise';
+        
+    case 'Red'
+        noise = rednoise(length);
+        noise = noise';
+        
+    case 'Violet'
+        noise = rednoise(length);
+        noise = noise';
+end
 
-%% White Noise
-noise.white = randn(length(data.axi),1);
-noise.db_white = mean(db(noise.white));
+noise_db = mean(db(noise));
+fprintf('rata-rata level %s noise = %.2f dB\n\n', type, noise_db);
 
-fprintf('rata-rata level pada sumbu axial = %.2f dB\n', noise.db_white);
+noise_dbmax = max(db(noise));
+fprintf('max level %s noise = %.2f dB\n\n', type, noise_dbmax);
 
-% jika ingin SNR = 0
-pow = -(noise.db_white - data.db_axi);
-
-% jika ingin memasukkan SNR tertentu
-
-noise.white = noise.white*10^(pow/20);
-
-noise.db_white = mean(db(noise.white));
-fprintf('rata-rata level pada sumbu axial = %.2f dB\n', noise.db_white);
-
-data.axi_whi = data.axi + noise.white;
+noise = noise*10^(pow/20);
+mix = data + noise;
+       
+end
