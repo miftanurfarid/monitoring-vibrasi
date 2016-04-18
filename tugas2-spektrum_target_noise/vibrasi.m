@@ -73,7 +73,7 @@ noise.type = 'White';   % jenis noise
 data.nfft = 1024;
 
 noise.title = sprintf('Spektrum Getaran Pompa(Aksial, %.1fdB %sNoise)',...
-    noise.pow + noise.dbmax_white, noise.type);
+    noise.pow + noise.db_white, noise.type);
 
 plot_vibrasinoise(data.mix, data.axi, data.fs, data.nfft,...
     noise.title, data.title, 1);
