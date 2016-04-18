@@ -13,13 +13,14 @@
 clear all;
 %close all;
 clc;
-
+t = 0:1/25600:2;
 load p1-unbalance.lvm          
-
+%data.axi = sin(2*pi*100*t);
+%data.axi = data.axi';
 % kolom 1 = waktu
 data.axi     = p1_unbalance(:,2);   % kolom 2 = axial
-%data.hor     = p1_unbalance(:,3);   % kolom 3 = horizontal
-%data.vert    = p1_unbalance(:,4);   % kolom 4 = vertical
+data.hor     = p1_unbalance(:,3);   % kolom 3 = horizontal
+data.vert    = p1_unbalance(:,4);   % kolom 4 = vertical
 
 clear p1_unbalance;
 % normalisasi skala -1 hingga 1
@@ -61,12 +62,13 @@ fprintf('max level pada sumbu aksial = %.2f dB\n', data.dbmax_axi);
 %fprintf('max level pada sumbu vertikal = %.2f dB\n', data.dbmax_vert);
 
 %% tambah noise
-noise.pow = 120;
-noise.type = 'Violet';   % jenis noise
+noise.pow = 20;
+noise.type = 'White';   % jenis noise
 [data.mix] = tambah_noise(data.axi, noise.pow, noise.type,...
     length(data.axi));
 %% plot spektrum vibrasi & vibrasi + noise
-data.nfft = 1024;
+data.nfft = 2^nextpow2(length(data.axi));
+%data.nfft = 4096;
 
 noise.title = sprintf('Spektrum Getaran Pompa( Aksial, %i dB %s Noise)',...
     noise.pow, noise.type);
