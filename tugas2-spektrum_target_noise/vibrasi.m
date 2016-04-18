@@ -41,10 +41,10 @@ data.fs = 25600;
 data.title = 'Spektrum Getaran Pompa (aksial)';
 
 % axial
-data.db_axi = mean(db(data.axi));
+data.db_axi = mean(mag2db(abs(data.axi)));
 fprintf('rata-rata level pada sumbu aksial = %.2f dB\n\n', data.db_axi);
 
-data.dbmax_axi = max(db(data.axi));
+data.dbmax_axi = max(mag2db(abs(data.axi)));
 fprintf('max level pada sumbu aksial = %.2f dB\n\n', data.dbmax_axi);
 
 %horizontal
@@ -64,16 +64,16 @@ fprintf('max level pada sumbu aksial = %.2f dB\n\n', data.dbmax_axi);
 fprintf('_________________________________________________\n\n');
 
 %% tambah noise
-noise.pow = 20;
+noise.pow = 0;
 noise.type = 'White';   % jenis noise
-[data.mix, noise.dbmax_white, noise.db_white] = tambah_noise(data.axi, noise.pow, noise.type,...
-    length(data.axi));
+[data.mix, noise.dbmax_white, noise.db_white] = tambah_noise(data.axi,...
+    noise.pow, noise.type, length(data.axi));
 %% plot spektrum vibrasi & vibrasi + noise
 %data.nfft = 2^nextpow2(length(data.axi));
 data.nfft = 1024;
 
-noise.title = sprintf('Spektrum Getaran Pompa( Aksial, %.1f dB %s Noise)',...
-    noise.pow + noise.db_white, noise.type);
+noise.title = sprintf('Spektrum Getaran Pompa(Aksial, %.1fdB %sNoise)',...
+    noise.pow + noise.dbmax_white, noise.type);
 
 plot_vibrasinoise(data.mix, data.axi, data.fs, data.nfft,...
     noise.title, data.title, 1);
