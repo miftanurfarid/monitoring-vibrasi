@@ -6,7 +6,7 @@ function vibrasi(kerusakan, sumbu, jenis_noise, pow)
 % noise dan blue noise)
 %
 % kerusakan:
-% 1 = normal, 2 = unbalance
+% 1 = normal, 2 = unbalance, 3 = novibrasi
 %
 % sumbu:
 % 1 = axial, 2 = horizontal, 3 = vertical
@@ -37,6 +37,9 @@ switch data.kerusakan
         
     case 2
         data.kerusakan = 'Unbalance';
+        data.vibrasi = load(data.kerusakan);
+    case 3
+        data.kerusakan = 'NoVibrasi';
         data.vibrasi = load(data.kerusakan);
 end
 
@@ -135,8 +138,8 @@ noise.type = jenis_noise;   % jenis noise
 
 %% plot spektrum vibrasi & vibrasi + noise
 
-noise.title = sprintf('Spektrum Getaran Pompa ( %s, %.1f dB %s Noise )',...
-    data.type, noise.pow + noise.db, noise.type);
+noise.title = sprintf('Spektrum Getaran Pompa %s ( %s, %.1f dB %s Noise )',...
+    data.kerusakan, data.type, noise.pow + noise.db, noise.type);
 
 plot_vibrasinoise(data.mix, data.vibrasi, data.fs, data.nfft,...
     noise.title, data.title, data.Tw, data.Ts, fig);
