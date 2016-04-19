@@ -30,7 +30,6 @@ switch type     % Jenis - jenis noise
         
     case 'Pink'% Pink Noise
         noise = pinknoise(length);
-        noise = noise';
         % normalisasi skala -1 hingga 1
         xmax = 1;
         xmin = -1;
@@ -40,7 +39,6 @@ switch type     % Jenis - jenis noise
         
     case 'Red'
         noise = rednoise(length);
-        noise = noise';
         % normalisasi skala -1 hingga 1
         xmax = 1;
         xmin = -1;
@@ -49,7 +47,6 @@ switch type     % Jenis - jenis noise
         noise = noise';
     case 'Violet'
         noise = rednoise(length);
-        noise = noise';
         % normalisasi skala -1 hingga 1
         xmax = 1;
         xmin = -1;
