@@ -1,8 +1,20 @@
+function vibrasi(kerusakan, sumbu, jenis_noise, pow)
 % vibrasi.m
 %
 % Performansi spektrogram menampilkan spektrum data getaran pompa terhadap
 % kenaikan tingkat tekanan bunyi dari noise (white noise, pink noise, brown
 % noise dan blue noise)
+%
+% kerusakan:
+% 1 = normal, 2 = unbalance
+%
+% sumbu:
+% 1 = axial, 2 = horizontal, 3 = vertical
+% 
+% jenis_noise:
+% 'White', 'Blue', 'Pink', 'Red', 'Violet'
+%
+% pow = power noise in dB
 %
 % 17/04/2016 11:27 PM
 % mifta nur farid, miftanurfarid@gmail.com
@@ -10,70 +22,124 @@
 %
 % Teknik Fisika - Institut Teknologi Sepuluh Nopember
 %__________________________________________________________________________
-clear all;
-%close all;
-clc;
-t = 0:1/25600:2;
-load p1-unbalance.lvm          
-%data.axi = sin(2*pi*100*t);    % puretone
-%data.axi = data.axi';
-% kolom 1 = waktu
-data.axi     = p1_unbalance(:,2);   % kolom 2 = axial
-data.hor     = p1_unbalance(:,3);   % kolom 3 = horizontal
-data.vert    = p1_unbalance(:,4);   % kolom 4 = vertical
+data.fs = 25600;            % frekuensi sampling 25600 Hz
+data.kerusakan = kerusakan; % jenis kerusakan pompa
+data.Tw = 60;               % windows 50 ms
+data.Ts = 5;                % windows shift 5 ms
+data.window = @hamming;
+data.nfft = 1024;
 
-clear p1_unbalance;
-% normalisasi skala -1 hingga 1
-data.xmax = 1; 
-data.xmin = -1;
+% jenis kerusakan pompa
+switch data.kerusakan
+    case 1
+        data.kerusakan = 'Normal';
+        data.vibrasi = load(data.kerusakan);
+        
+    case 2
+        data.kerusakan = 'Unbalance';
+        data.vibrasi = load(data.kerusakan);
+end
 
-data.axi  = (data.axi - min(data.axi)).*(data.xmax - data.xmin)/...
-    (max(data.axi) - min(data.axi)) + data.xmin;
-%data.hor  = (data.hor - min(data.hor)).*(data.xmax - data.xmin)/...
-%    (max(data.hor) - min(data.hor)) + data.xmin;
-%data.vert = (data.vert - min(data.vert)).*(data.xmax - data.xmin)/...
-%    (max(data.vert) - min(data.vert)) + data.xmin;
+fig = 1;
 
-% frekuensi sampling 25600 Hz
-data.fs = 25600;
+plot_vibrasi(data.vibrasi, data.fs, data.Tw, data.Ts, data.window,...
+    data.nfft, data.kerusakan, fig);
+fig = fig + 1;
 
-% type data
-data.title = 'Spektrum Getaran Pompa (aksial)';
+switch sumbu
+    case 1  %axial
+        data.type = 'Axial';
+        
+        data.vibrasi = data.vibrasi(:,2); % kolom 2 = axial
+        
+        % normalisasi skala -1 hingga 1
+        data.xmax = 1;
+        data.xmin = -1;
+        
+        data.vibrasi  = (data.vibrasi - min(data.vibrasi)).*...
+            (data.xmax - data.xmin)/(max(data.vibrasi)...
+            - min(data.vibrasi)) + data.xmin;
+        
+        data.db = mean(mag2db(abs(data.vibrasi)));
+        fprintf('rata-rata level pada sumbu %s = %.2f dB\n\n',...
+            data.type, data.db);
+        
+        data.dbmax = max(mag2db(abs(data.vibrasi)));
+        fprintf('max level pada sumbu %s = %.2f dB\n\n',...
+            data.type, data.dbmax);
+        
+        data.dbmin = min(mag2db(abs(data.vibrasi)));
+        fprintf('min level pada sumbu %s = %.2f dB\n\n',...
+            data.type, data.dbmin);
+        
+    case 2  %horizontal
+        data.type = 'Horizontal';
+        
+        data.vibrasi = data.vibrasi(:,3); % kolom 3 = horizontal
+        
+        % normalisasi skala -1 hingga 1
+        data.xmax = 1;
+        data.xmin = -1;
+        
+        data.vibrasi  = (data.vibrasi - min(data.vibrasi)).*...
+            (data.xmax - data.xmin)/(max(data.vibrasi)...
+            - min(data.vibrasi)) + data.xmin;
+        
+        data.db = mean(mag2db(abs(data.vibrasi)));
+        fprintf('rata-rata level pada sumbu %s = %.2f dB\n\n',...
+            data.type, data.db);
+        
+        data.dbmax = max(mag2db(abs(data.vibrasi)));
+        fprintf('max level pada sumbu %s = %.2f dB\n\n',...
+            data.type, data.dbmax);
+        
+        data.dbmin = min(mag2db(abs(data.vibrasi)));
+        fprintf('min level pada sumbu %s = %.2f dB\n\n',...
+            data.type, data.dbmin);
+        
+    case 3  %vertikal
+        data.type = 'Vertikal';
+        
+        data.vibrasi = data.vibrasi(:,4); % kolom 4 = vertical
+        
+        % normalisasi skala -1 hingga 1
+        data.xmax = 1;
+        data.xmin = -1;
+        
+        data.vibrasi  = (data.vibrasi - min(data.vibrasi)).*...
+            (data.xmax - data.xmin)/(max(data.vibrasi)...
+            - min(data.vibrasi)) + data.xmin;
+        
+        data.db = mean(mag2db(abs(data.vibrasi)));
+        fprintf('rata-rata level pada sumbu %s = %.2f dB\n\n',...
+            data.type, data.db);
+        
+        data.dbmax = max(mag2db(abs(data.vibrasi)));
+        fprintf('max level pada sumbu %s = %.2f dB\n\n',...
+            data.type, data.dbmax);
+        
+        data.dbmin = min(mag2db(abs(data.vibrasi)));
+        fprintf('min level pada sumbu %s = %.2f dB\n\n',...
+            data.type, data.dbmin);
+end
 
-% axial
-data.db_axi = mean(mag2db(abs(data.axi)));
-fprintf('rata-rata level pada sumbu aksial = %.2f dB\n\n', data.db_axi);
-
-data.dbmax_axi = max(mag2db(abs(data.axi)));
-fprintf('max level pada sumbu aksial = %.2f dB\n\n', data.dbmax_axi);
-
-%horizontal
-%data.db_hor = mean(db(data.hor));
-%fprintf('rata-rata level pada sumbu horizontal = %.2f dB\n', data.db_hor);
-
-%data.dbmax_hor = max(db(data.hor));
-%fprintf('max level pada sumbu horizontal = %.2f dB\n', data.dbmax_hor);
-
-%vertikal
-%data.db_vert = mean(db(data.vert));
-%fprintf('rata-rata level pada sumbu vertikal = %.2f dB\n', data.db_vert);
-
-%data.dbmax_vert = max(db(data.vert));
-%fprintf('max level pada sumbu vertikal = %.2f dB\n', data.dbmax_vert);
-
+data.title = sprintf('Spektrum Getaran Pompa %s ( %s )',...
+    data.kerusakan, data.type);
 fprintf('_________________________________________________\n\n');
 
 %% tambah noise
-noise.pow = 0;
-noise.type = 'White';   % jenis noise
-[data.mix, noise.dbmax_white, noise.db_white] = tambah_noise(data.axi,...
-    noise.pow, noise.type, length(data.axi));
+noise.pow = pow;
+noise.type = jenis_noise;   % jenis noise
+[data.mix, noise.dbmax, noise.db] = tambah_noise(data.vibrasi,...
+    noise.pow, noise.type, length(data.vibrasi));
+
 %% plot spektrum vibrasi & vibrasi + noise
-%data.nfft = 2^nextpow2(length(data.axi));
-data.nfft = 1024;
 
-noise.title = sprintf('Spektrum Getaran Pompa(Aksial, %.1fdB %sNoise)',...
-    noise.pow + noise.db_white, noise.type);
+noise.title = sprintf('Spektrum Getaran Pompa ( %s, %.1f dB %s Noise )',...
+    data.type, noise.pow + noise.db, noise.type);
 
-plot_vibrasinoise(data.mix, data.axi, data.fs, data.nfft,...
-    noise.title, data.title, 1);
+plot_vibrasinoise(data.mix, data.vibrasi, data.fs, data.nfft,...
+    noise.title, data.title, data.Tw, data.Ts, fig);
+fig = fig + 1;
+
+end
