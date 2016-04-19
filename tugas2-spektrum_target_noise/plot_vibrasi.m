@@ -1,3 +1,4 @@
+function plot_vibrasi(data, fs, Tw, Ts, window, nfft, kerusakan, fig)
 % plot_vibrasi.m
 %
 % Menampilkan spektrum antara 0 - 1000 Hz dari data getaran pompa pada tiga
@@ -9,26 +10,28 @@
 %
 % Teknik Fisika - Institut Teknologi Sepuluh Nopember
 %__________________________________________________________________________
-NFFT = 1024;
 
-figure(1);
+figure(fig);
 subplot(131);
-myspectrogram(data.axi, data.fs, [20 5], @hamming, NFFT); axis tight;
-title ('Spektrum Getaran Pompa (Aksial)', 'fontweight','bold',...
+myspectrogram(data(:,2), fs, [Tw Ts], window, nfft); axis tight;
+name = sprintf('Spektrum Getaran Pompa %s (Axial)', kerusakan);
+title (name, 'fontweight','bold',...
     'fontsize',12);
-xlabel ('waktu (detik)','fontweight','bold','fontsize',12);
-ylabel ('frekuensi (Hz)','fontweight','bold','fontsize',12);
+xlabel ('Waktu (Detik)','fontweight','bold','fontsize',12);
+ylabel ('Frekuensi (Hz)','fontweight','bold','fontsize',12);
 
 subplot(132);
-myspectrogram(data.hor, data.fs, [20 5], @hamming, NFFT); axis tight;
-title ('Spektrum Getaran Pompa (Horizontal)', 'fontweight','bold',...
+myspectrogram(data(:,3), fs, [Tw Ts], window, nfft); axis tight;
+name = sprintf('Spektrum Getaran Pompa %s (Horizontal)', kerusakan);
+title (name, 'fontweight','bold',...
     'fontsize',12);
-xlabel ('waktu (detik)','fontweight','bold','fontsize',12);
-ylabel ('frekuensi (Hz)','fontweight','bold','fontsize',12);
+xlabel ('Waktu (Detik)','fontweight','bold','fontsize',12);
+ylabel ('Frekuensi (Hz)','fontweight','bold','fontsize',12);
 
 subplot(133);
-myspectrogram(data.hor, data.fs, [20 5], @hamming, NFFT); axis tight;
-title ('Spektrum Getaran Pompa (Vertikal)', 'fontweight','bold',...
+myspectrogram(data(:,2), fs, [Tw Ts], window, nfft); axis tight;
+name = sprintf('Spektrum Getaran Pompa %s (Vertical)', kerusakan);
+title (name, 'fontweight','bold',...
     'fontsize',12);
-xlabel ('waktu (detik)','fontweight','bold','fontsize',12);
-ylabel ('frekuensi (Hz)','fontweight','bold','fontsize',12);
+xlabel ('Waktu (Detik)','fontweight','bold','fontsize',12);
+ylabel ('Frekuensi (Hz)','fontweight','bold','fontsize',12);

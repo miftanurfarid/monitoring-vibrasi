@@ -76,7 +76,7 @@ function [handle] = myspectrogram(s, fs, T, w, nfft, Slim, alpha, cmap, cbar, ty
     
     %__________________________________________________________________________________________________________________
     % PLOT AND LABEL RESULTS 
-    handle = imagesc(T, F(1:round(length(F)/24)), S(1:length(F)/24,:), [Smin Smax]);
+    handle = imagesc(T, F(1:round(length(F)/6)), S(1:length(F)/6,:), [Smin Smax]);
     %handle = imagesc(T, F, S, 'CDataMapping', 'direct');
     axis('xy');
     axis([0 N/fs  0 fs/2]);
@@ -92,7 +92,7 @@ function [handle] = myspectrogram(s, fs, T, w, nfft, Slim, alpha, cmap, cbar, ty
     case {'default'}
         colormap('default');
         map=colormap;
-        colormap(1-map);    
+        colormap(map);    
     otherwise, colormap(cmap);
     end
 
