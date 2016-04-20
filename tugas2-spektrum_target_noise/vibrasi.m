@@ -63,18 +63,6 @@ switch sumbu
             (data.xmax - data.xmin)/(max(data.vibrasi)...
             - min(data.vibrasi)) + data.xmin;
         
-        data.db = mean(mag2db(abs(data.vibrasi)));
-        fprintf('rata-rata level pada sumbu %s = %.2f dB\n\n',...
-            data.type, data.db);
-        
-        data.dbmax = max(mag2db(abs(data.vibrasi)));
-        fprintf('max level pada sumbu %s = %.2f dB\n\n',...
-            data.type, data.dbmax);
-        
-        data.dbmin = min(mag2db(abs(data.vibrasi)));
-        fprintf('min level pada sumbu %s = %.2f dB\n\n',...
-            data.type, data.dbmin);
-        
     case 2  %horizontal
         data.type = 'Horizontal';
         
@@ -87,19 +75,7 @@ switch sumbu
         data.vibrasi  = (data.vibrasi - min(data.vibrasi)).*...
             (data.xmax - data.xmin)/(max(data.vibrasi)...
             - min(data.vibrasi)) + data.xmin;
-        
-        data.db = mean(mag2db(abs(data.vibrasi)));
-        fprintf('rata-rata level pada sumbu %s = %.2f dB\n\n',...
-            data.type, data.db);
-        
-        data.dbmax = max(mag2db(abs(data.vibrasi)));
-        fprintf('max level pada sumbu %s = %.2f dB\n\n',...
-            data.type, data.dbmax);
-        
-        data.dbmin = min(mag2db(abs(data.vibrasi)));
-        fprintf('min level pada sumbu %s = %.2f dB\n\n',...
-            data.type, data.dbmin);
-        
+
     case 3  %vertikal
         data.type = 'Vertikal';
         
@@ -112,34 +88,27 @@ switch sumbu
         data.vibrasi  = (data.vibrasi - min(data.vibrasi)).*...
             (data.xmax - data.xmin)/(max(data.vibrasi)...
             - min(data.vibrasi)) + data.xmin;
-        
-        data.db = mean(mag2db(abs(data.vibrasi)));
-        fprintf('rata-rata level pada sumbu %s = %.2f dB\n\n',...
-            data.type, data.db);
-        
-        data.dbmax = max(mag2db(abs(data.vibrasi)));
-        fprintf('max level pada sumbu %s = %.2f dB\n\n',...
-            data.type, data.dbmax);
-        
-        data.dbmin = min(mag2db(abs(data.vibrasi)));
-        fprintf('min level pada sumbu %s = %.2f dB\n\n',...
-            data.type, data.dbmin);
 end
 
 data.title = sprintf('Spektrum Getaran Pompa %s ( %s )',...
     data.kerusakan, data.type);
-fprintf('_________________________________________________\n\n');
 
 %% tambah noise
+
 noise.pow = pow;
 noise.type = jenis_noise;   % jenis noise
-[data.mix, noise.dbmax, noise.db] = tambah_noise(data.vibrasi,...
+[data.mix] = tambah_noise(data.vibrasi,...
     noise.pow, noise.type, length(data.vibrasi));
+noise.type = sprintf('%s Noise', jenis_noise);
+
+%% Print SNR
+
+overall_snr = snr(data.vibrasi, data.mix - data.vibrasi);
 
 %% plot spektrum vibrasi & vibrasi + noise
 
-noise.title = sprintf('Spektrum Getaran Pompa %s ( %s, %.1f dB %s Noise )',...
-    data.kerusakan, data.type, noise.pow + noise.db, noise.type);
+noise.title = sprintf('Spektrum Getaran Pompa %s ( %s, %.1f dB SNR %s )',...
+    data.kerusakan, data.type, overall_snr, noise.type);
 
 plot_vibrasinoise(data.mix, data.vibrasi, data.fs, data.nfft,...
     noise.title, data.title, data.Tw, data.Ts, fig);
