@@ -46,7 +46,7 @@ function [handle] = myspectrogram(s, fs, T, w, nfft, Slim, alpha, cmap, cbar, ty
 
     %__________________________________________________________________________________________________________________
     % DECLARE VARIABLES
-    if(isstr(s)), [s, fs] = wavread(s); end; % read audio data from file
+    if(ischar(s)), [s, fs] = wavread(s); end; % read audio data from file
     Tw = T(1);                          % frame width (ms)
     Ts = T(2);                          % frame shift (ms)
     Nw = round(fs*Tw*0.001);            % frame width (samples)
