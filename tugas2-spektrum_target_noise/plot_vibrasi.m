@@ -19,6 +19,8 @@ title (name, 'fontweight','bold',...
     'fontsize',12);
 xlabel ('Waktu (Detik)','fontweight','bold','fontsize',12);
 ylabel ('Frekuensi (Hz)','fontweight','bold','fontsize',12);
+a = colorbar('eastoutside');
+ylabel(a, 'dB', 'fontweight','bold');
 
 subplot(132);
 myspectrogram(data(:,3), fs, [Tw Ts], window, nfft); axis tight;
@@ -27,11 +29,15 @@ title (name, 'fontweight','bold',...
     'fontsize',12);
 xlabel ('Waktu (Detik)','fontweight','bold','fontsize',12);
 ylabel ('Frekuensi (Hz)','fontweight','bold','fontsize',12);
+a = colorbar('eastoutside');
+ylabel(a, 'dB', 'fontweight','bold');
 
 subplot(133);
-myspectrogram(data(:,2), fs, [Tw Ts], window, nfft); axis tight;
+myspectrogram(data(:,4), fs, [Tw Ts], window, nfft); axis tight;
 name = sprintf('Spektrum Getaran Pompa %s (Vertical)', kerusakan);
 title (name, 'fontweight','bold',...
     'fontsize',12);
 xlabel ('Waktu (Detik)','fontweight','bold','fontsize',12);
 ylabel ('Frekuensi (Hz)','fontweight','bold','fontsize',12);
+a = colorbar('eastoutside');
+ylabel(a, 'dB', 'fontweight','bold');
