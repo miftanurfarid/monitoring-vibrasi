@@ -18,10 +18,17 @@ myspectrogram(data1, fs, [Tw Ts], @hamming, nfft); axis tight;
 title (type1, 'fontweight','bold', 'fontsize', 12);
 xlabel ('Waktu (Detik)','fontweight','bold','fontsize',12);
 ylabel ('Frekuensi (Hz)','fontweight','bold','fontsize',12);
+a = colorbar('eastoutside');
+ylabel(a, 'dB', 'fontweight','bold');
+
 subplot(212);
 myspectrogram(data2, fs, [Tw Ts], @hamming, nfft); axis tight;
 title (type2, 'fontweight','bold',...
     'fontsize', 12);
 xlabel ('Waktu (Detik)','fontweight','bold','fontsize',12);
 ylabel ('Frekuensi (Hz)','fontweight','bold','fontsize',12);
+a = colorbar('eastoutside');
+ylabel(a, 'dB', 'fontweight','bold');
+
+
 end
