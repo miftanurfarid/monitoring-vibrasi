@@ -54,7 +54,7 @@ function [handle] = myspectrogram(s, fs, T, w, nfft, Slim, alpha, cmap, cbar, ty
     N  = length(s);                     % length of speech signal (samples)
     Smin = Slim(1);                     % lower normalized dynamic range limit 
     Smax = Slim(2);                     % upper normalized dynamic range limit
-    if(isstr(w)), w = str2func(w); end; % obtain window function handle from string input
+    if(ischar(w)), w = str2func(w); end; % obtain window function handle from string input
 
     %__________________________________________________________________________________________________________________
     % SPEECH PREPROCESSING
@@ -129,7 +129,7 @@ function [S,F,T] = toframes(s,w,T,fs,nfft,type)
 
     %__________________________________________________________________________________________________________________
     % DEFINE VARIABLES
-    if(isstr(s)) [s, fs, nbits] = wavread(s); else, nbits=16; end;
+    if(ischar(s)) [s, fs, nbits] = wavread(s); else, nbits=16; end;
 
     s = s(:).';
 %    s = s-mean(s);
@@ -146,7 +146,7 @@ function [S,F,T] = toframes(s,w,T,fs,nfft,type)
     ss = length(s);                                         % length of the signal for processing
     t  = [0:ss-1]/fs;                                       % time vector
     M  = ((ss-N)/Z)+1;                                      % number of overlapping segments
-    if(isstr(w)), w=str2func(w); end;
+    if(ischar(w)), w=str2func(w); end;
     wa = w(N).';                                            % analysis window A (for magnitude component)
     wsyn = 0.5-0.5*cos((2*pi*((0:N-1)+0.5))/N);             % synthesis window
 
